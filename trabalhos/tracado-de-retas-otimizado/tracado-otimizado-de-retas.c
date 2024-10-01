@@ -44,11 +44,11 @@ void draw_line(Point a, Point b) {
 
     //vendo o sinal da derivada, para ver se a variação é crescente ou decrescente
     //ex: ponto A à esquerda do ponto B: a variação de X é negativa, portanto X deve variar de modo decrescente
-    int stepX = (dx > 0) ? 1 : -1; 
-    int stepY = (dy > 0) ? 1 : -1;  
+    int varX = (dx > 0) ? 1 : -1; //variacao de X (crescente ou decrescente)
+    int varY = (dy > 0) ? 1 : -1; //variacao de Y (crescente ou decrescente)
     
-    dx *= stepX; // deixa as variacoes sempre positivas, ja que temos a informacao de crescimento (step)
-    dy *= stepY; // deixa as variacoes sempre positivas, ja que temos a informacao de crescimento (step) 
+    dx *= varX; // deixa as variacoes sempre positivas, ja que temos a informacao de crescimento (var)
+    dy *= varY; // deixa as variacoes sempre positivas, ja que temos a informacao de crescimento (var) 
             
     //erro acumulado no desenho da reta, ja que desenhamos apenas em pontos inteiros
     //padrao adotado: a variacao em X aumenta o erro, e a variacao em Y reduz o erro, assim erro = 0 é o ideal
@@ -57,23 +57,21 @@ void draw_line(Point a, Point b) {
 
     //loop que sai do ponto A ate chegar no ponto B, variando X e Y
     while (x != b.x || y != b.y) {
-        // if(x > SIZE || y > SIZE) break;  
         //desenha o pixel atual na tela
         draw_pixel(x, y);
         
         //multiplicacao por 2 para garantir maior precisao do erro, nao precisando usar double
         int erro2 = 2 * erro; 
-        
         //se o erro estiver OK para o eixo Y, movemos no eixo X e incrementamos o erro para o eixo Y (ou seja, subtrai dy)
         if (erro2 > -dy) {
             erro -= dy; //movemos em X, entao o erro em Y aumentou (erro diminui)
-            x += stepX;
+            x += varX;
         }
         
         //se o erro estiver OK para o eixo X, movemos no eixo Y e incrementaos o erro para o eixo X (ou seja, somamos dx)
         if (erro2 < dx) {
             erro += dx; //movemos em Y, entao o erro em X aumentou (erro aumenta)
-            y += stepY;
+            y += varY;
         }   
     }
     
@@ -83,6 +81,7 @@ void draw_line(Point a, Point b) {
 
 //percorre os pontos 2 a 2 e desenha uma reta entre eles. Se sobrar algum ponto, desenha ele como um pixel em branco
 void display(){
+    
     glClear(GL_COLOR_BUFFER_BIT);
 
     for(int i = 0; i < at; i ++){
@@ -91,6 +90,7 @@ void display(){
         if(i & 1) draw_line(points[i-1], points[i]);
     }
 
+    //se o ponto atual for impar, entao tem 1 ponto que nao pertence a uma reta. Colorimos ele de branco
     if(at & 1){
         glColor3f(1.0, 1.0, 1.0);
         draw_pixel(points[at-1].x, points[at-1].y);
@@ -128,6 +128,8 @@ void handle_mouse(int button, int state, int x, int y) {
         draw_pixel(points[at].x, points[at].y);
         glutSwapBuffers();  
     }
+
+
 }
 
 //função que trata teclas normais do teclado, alternando se a tecla está ativa ou desativa
@@ -160,7 +162,6 @@ int main(int argc, char** argv){
     //Funções a serem chamadas durante a execução do programa
     glutMouseFunc(handle_mouse);
     glutKeyboardFunc(handle_keys);
-
 
     //Inicio do programa
     glutMainLoop();
