@@ -79,19 +79,22 @@ void draw_line(Point a, Point b) {
     
 }
 
-//percorre os pontos 2 a 2 e desenha uma reta entre eles. Se sobrar algum ponto, desenha ele como um pixel em branco
-void display(){
-    
-    glClear(GL_COLOR_BUFFER_BIT);
-
+//funcao que desenha os eixos de coordenadas, ou seja, as linhas Y = 0 e X = 0
+void draw_eixos(){
+    glColor3f(1.0, 1.0, 1.0);
     Point a = {left, 0};
     Point b = {right, 0};
     Point c = {0, bottom};
     Point d = {0, top};
 
-    glColor3f(1.0, 1.0, 1.0);
     draw_line(a, b);
     draw_line(c, d); 
+}
+
+//percorre os pontos 2 a 2 e desenha uma reta entre eles. Se sobrar algum ponto, desenha ele como um pixel em branco
+void display(){
+    
+    glClear(GL_COLOR_BUFFER_BIT);
 
     for(int i = 0; i < at; i ++){
         glColor3fv(cores[points[i].cor]);
@@ -104,6 +107,8 @@ void display(){
         glColor3f(1.0, 1.0, 1.0);
         draw_pixel(points[at-1].x, points[at-1].y);
     }
+
+    draw_eixos();
 
     glutSwapBuffers(); //exibe as mudancas feitas na tela
 }
