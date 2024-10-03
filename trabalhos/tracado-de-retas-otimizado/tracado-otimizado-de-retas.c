@@ -24,7 +24,7 @@ int cor_atual = 0;
 GLfloat cores[3][3] = {{0, 0, 1}, {1, 0, 0}, {0, 1, 0}};
 
 int h = SIZE, w = SIZE; //dimensoes da janela
-GLfloat left = 0, right = SIZE, bottom = 0, top = SIZE; //dimensoes da janela de visualização
+GLfloat left = -SIZE, right = SIZE, bottom = -SIZE, top = SIZE; //dimensoes da janela de visualização
 
 //desenha um unico ponto (x,y) na tela
 void draw_pixel(int x, int y){
@@ -84,6 +84,15 @@ void display(){
     
     glClear(GL_COLOR_BUFFER_BIT);
 
+    Point a = {left, 0};
+    Point b = {right, 0};
+    Point c = {0, bottom};
+    Point d = {0, top};
+
+    glColor3f(1.0, 1.0, 1.0);
+    draw_line(a, b);
+    draw_line(c, d); 
+
     for(int i = 0; i < at; i ++){
         glColor3fv(cores[points[i].cor]);
 
@@ -111,7 +120,8 @@ void initialize(void){
 //click direito: remove, se houver, o ultimo ponto q não faz parte de alguma reta
 void handle_mouse(int button, int state, int x, int y) {
     if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-        y = h - y;
+        y = h - 2 * y;
+        x = 2 * x - SIZE;
         points[at].x = x;
         points[at].y = y;
         points[at].cor = cor_atual;
@@ -128,8 +138,6 @@ void handle_mouse(int button, int state, int x, int y) {
         draw_pixel(points[at].x, points[at].y);
         glutSwapBuffers();  
     }
-
-
 }
 
 //função que trata teclas normais do teclado, alternando se a tecla está ativa ou desativa
@@ -162,6 +170,8 @@ int main(int argc, char** argv){
     //Funções a serem chamadas durante a execução do programa
     glutMouseFunc(handle_mouse);
     glutKeyboardFunc(handle_keys);
+
+    display();
 
     //Inicio do programa
     glutMainLoop();
