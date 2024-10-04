@@ -6,10 +6,12 @@
 #define N (int) 1e5 //limite de pontos
 #define SIZE 1000 // tamanho da janela e da viewport
 
+//cores disponiveis 
 enum colors{
     BLUE = 0, RED, GREEN
 };
 
+//estrutura que define um ponto, com suas coordenadas (X,Y) e sua cor
 typedef struct point{
     int x, y;
     int cor;
@@ -48,11 +50,9 @@ void draw_line(Point a, Point b) {
     int varY = (dy > 0) ? 1 : -1; //variacao de Y (crescente ou decrescente)
     
     dx *= varX; // deixa as variacoes sempre positivas, ja que temos a informacao de crescimento (var)
-    dy *= varY; // deixa as variacoes sempre positivas, ja que temos a informacao de crescimento (var) 
+    dy *= varY; // deixa as variacoes sempre positivas, ja que temos a informacao de crescimento (var)
             
-    //erro acumulado no desenho da reta, ja que desenhamos apenas em pontos inteiros
-    //padrao adotado: a variacao em X aumenta o erro, e a variacao em Y reduz o erro, assim erro = 0 é o ideal
-    //a ser buscado, ou seja, se o erro tiver muito grande, move no Y, se tiver muito pequeno, move em X
+    //erro acumulado no desenho da reta, ja que desenhamos apenas em pontos inteiros. erro = 0 é o ideal a ser buscado (que indica que o ponto está na reta)
     int erro = dx - dy;
 
     //loop que sai do ponto A ate chegar no ponto B, variando X e Y
@@ -60,23 +60,24 @@ void draw_line(Point a, Point b) {
         //desenha o pixel atual na tela
         draw_pixel(x, y);
         
-        //multiplicacao por 2 para garantir maior precisao do erro, nao precisando usar double
+        //calculo do erro admitindo que movemos na diagonal (x+1 e y+1)
         int erro2 = 2 * erro; 
-        //se o erro estiver OK para o eixo Y, movemos no eixo X e incrementamos o erro para o eixo Y (ou seja, subtrai dy)
-        if (erro2 > -dy) {
+
+        //se o erro estiver ok para o eixo X, movemos no eixo X e incrementamos o erro para o eixo Y (ou seja, subtrai dy, afastando o erro do 0 (ideal))
+        if (erro2 >= -dy) { //erro diagonal + erro_x > 0
             erro -= dy; //movemos em X, entao o erro em Y aumentou (erro diminui)
             x += varX;
         }
         
-        //se o erro estiver OK para o eixo X, movemos no eixo Y e incrementaos o erro para o eixo X (ou seja, somamos dx)
-        if (erro2 < dx) {
+        //se o erro estiver ok para o eixo Y, movemos no eixo Y e incrementamos o erro para o eixo X (ou seja, somamos dx, afastando o erro do 0 (ideal))
+        
+        if (erro2 <= dx) { //erro diagonal + erro_y < 0 
             erro += dx; //movemos em Y, entao o erro em X aumentou (erro aumenta)
             y += varY;
         }   
     }
     
     draw_pixel(b.x, b.y); //desenha o ponto B (final)
-    
 }
 
 //funcao que desenha os eixos de coordenadas, ou seja, as linhas Y = 0 e X = 0
@@ -96,6 +97,8 @@ void display(){
     
     glClear(GL_COLOR_BUFFER_BIT);
 
+    draw_eixos(); //desenha os eixos de coordenadas(X = 0 e Y = 0)
+
     for(int i = 0; i < at; i ++){
         glColor3fv(cores[points[i].cor]);
 
@@ -108,7 +111,6 @@ void display(){
         draw_pixel(points[at-1].x, points[at-1].y);
     }
 
-    draw_eixos();
 
     glutSwapBuffers(); //exibe as mudancas feitas na tela
 }
