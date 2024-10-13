@@ -6,6 +6,9 @@
 #include "../include/house.hpp"
 #include "../include/tree.hpp"
 #include "../include/car.hpp"
+#include "../include/mountain.hpp"
+#include "../include/cloud.hpp"
+#include "../include/windmill.hpp"
 
 #include <stdio.h>
 
@@ -14,15 +17,17 @@ void display(int){
 
     update_sun();
 
-
-
+    draw_mountains();
+    draw_houses();
     draw_trees();
 
+
     draw_ground();  
+
     update_cars();
-    draw_houses();
+    update_clouds();
 
-
+    update_windmills();
     glutSwapBuffers();
 }
 
@@ -36,6 +41,8 @@ int main(int argc, char* argv[]){
 
     //Funções a serem chamadas durante a execução do programa
     glutIdleFunc(idle);
+
+    glutFullScreen();
 
     //Inicio do programa
     glutMainLoop();

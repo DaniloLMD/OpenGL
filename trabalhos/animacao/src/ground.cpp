@@ -9,7 +9,6 @@ void draw_ground(){
         glVertex2i(SIZE, GROUND_HEIGHT);
         glVertex2i(SIZE,0);
     glEnd();
-
     int new_h = GROUND_HEIGHT - 50;
     glColor3fv(verde_claro);
     glBegin(GL_QUADS);

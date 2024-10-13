@@ -4,16 +4,17 @@
 
 void draw_trees(){
 
-    draw_tree_2_circles({SIZE/2 + 15, GROUND_HEIGHT});
-    draw_tree_2_circles({SIZE/2 + 60, GROUND_HEIGHT});
-    draw_tree_triangle({SIZE/2 + 120, GROUND_HEIGHT});
-
+    draw_tree_2_circles({SIZE/2 - 35, GROUND_HEIGHT});
+    draw_tree_2_circles({SIZE/2 + 10, GROUND_HEIGHT});
+    draw_tree_triangle({SIZE/2 + 70, GROUND_HEIGHT});
 
     for(int i = 0; i < 3; i++){
         int x = 145 + 50 * i;
         if(i&1) draw_tree_triangle({x, GROUND_HEIGHT}, true);
         else draw_tree_2_circles({x, GROUND_HEIGHT}, true);
     }
+
+
 }
 
 void draw_tronco(Point p, int altura, int largura){
@@ -29,9 +30,9 @@ void draw_tronco(Point p, int altura, int largura){
 
 void draw_tree_triangle(Point p, bool frutos){
 
-    int altura = 25;
+    int altura = 30;
     int largura = 10;
-    int borda = 25;
+    int borda = 18;
 
     if(frutos){
         glColor3f(1.0, 0.3, 0.0);
@@ -45,13 +46,20 @@ void draw_tree_triangle(Point p, bool frutos){
     draw_tronco(p, altura , largura);
 
     //folha
-    glColor3f(0.3, 0.7, 0.1);
     glBegin(GL_TRIANGLES);
+    glColor3f(0.68, 1.0, 0.18);
         glVertex2i(p.x - borda, p.y + altura);
         glVertex2i(p.x + largura / 2, p.y + altura + borda);
         glVertex2i(p.x + largura + borda, p.y + altura);
     glEnd();
 
+    //sombra
+    glColor3f(0.3, 0.7, 0.1);
+    glBegin(GL_TRIANGLES);
+        glVertex2i(p.x - borda, p.y + altura);
+        glVertex2i(p.x + largura / 2, p.y + altura + borda);
+        glVertex2i(p.x + largura / 2 , p.y + altura);
+    glEnd();
 }
 
 void draw_tree_2_circles(Point p, bool frutos){
@@ -65,9 +73,11 @@ void draw_tree_2_circles(Point p, bool frutos){
     glColor3f(0.3, 0.7, 0.1);
 
     int rad = 15;
+
     Circle c1 = {{p.x + largura/2, p.y + altura}, (double) rad};
     Circle c2 = {{p.x + largura/2, p.y + altura + rad}, (double) rad};
 
+    glColor3f(0.3, 0.7, 0.1);
     draw_circle(c1);
     draw_circle(c2);
 

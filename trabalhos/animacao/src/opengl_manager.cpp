@@ -7,9 +7,15 @@ void initialize(){
 
     //Inicialização do OpenGL, da janela principal e da janela de visualização
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(w, h); 
+    glutInitWindowSize(SCREEN_W, SCREEN_H); 
     glutCreateWindow("Animation");
 
-    glClearColor(0.3f, 0.3f, 0.5f, 1.0f);
+    glClearColor(sky_color[0],sky_color[1], sky_color[2], 1);
+
     gluOrtho2D(left, right, bottom, top);
+}
+
+//função que recebe um angulo em graus e retorna o mesmo em radianos
+double rad(double ang){
+    return ang * PI / 180;
 }

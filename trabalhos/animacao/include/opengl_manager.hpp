@@ -6,13 +6,20 @@
 
 #define PI acos(-1)
 
-#define SIZE 800  // tamanho da janela e da viewport
+// #define SIZE 1000  // tamanho da janela e da viewport
+int SIZE = 1000;
+
+const int SCREEN_W = SIZE, SCREEN_H = SIZE;
+
+GLfloat sky_color[] = {0.3, 0.3, 0.5};
 
 int h = SIZE, w = SIZE; //dimensoes da janela
 GLfloat left = 0, right = SIZE, bottom = 0, top = SIZE; //dimensoes da janela de visualização
 
 
 void initialize();
+
+double rad(double ang);
 
 
 #endif

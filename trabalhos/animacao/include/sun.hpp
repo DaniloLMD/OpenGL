@@ -10,7 +10,8 @@
 
 Circle sun = {{0, SUN_HEIGHT}, SUN_RAD};
 Circle moon = {{SIZE, SUN_HEIGHT}, SUN_RAD};
+Circle moon2 = {{SIZE - 30, SUN_HEIGHT}, SUN_RAD};
 
 void update_sun();
 
-#endif
+#endif  

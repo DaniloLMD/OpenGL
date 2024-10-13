@@ -13,16 +13,7 @@ all: _src clean_apps _apps
 
 _src: \
 		$(OBJ)/opengl_manager.o\
-		$(OBJ)/point.o \
-		$(OBJ)/circle.o \
-		$(OBJ)/ground.o \
-		$(OBJ)/sun.o \
-		$(OBJ)/house.o \
-		$(OBJ)/car.o \
-		$(OBJ)/tree.o  \
-		$(OBJ)/mountain.o \
-		$(OBJ)/cloud.o\
-		$(OBJ)/windmill.o
+		$(OBJ)/point.o
 
 clean_apps:
 	rm -rf $(BIN)/*

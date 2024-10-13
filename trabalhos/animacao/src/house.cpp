@@ -1,6 +1,7 @@
 #include "../include/house.hpp"
 #include "../include/point.hpp"
 #include "../include/ground.hpp"
+#include "../include/mountain.hpp"
 
 void draw_house(Point p){
     p.x += 30;
@@ -22,7 +23,7 @@ void draw_house(Point p){
         glVertex2i(p.x + 95, p.y);
 	glEnd();
 
-    ///cerca
+    ///parede
     glColor3f(.555, 1.0, 1.0);
 	glBegin(GL_POLYGON);
         glVertex2i(p.x + 5, p.y - 35);
@@ -31,7 +32,7 @@ void draw_house(Point p){
         glVertex2i(p.x + 90, p.y - 35);
 	glEnd();
 
-    ///sombra da cerca
+    ///sombra da parede
     glColor3f(.555, 0.924, 0.930);
 	glBegin(GL_POLYGON);
         glVertex2i(p.x + 25, p.y - 35);
@@ -106,8 +107,9 @@ void draw_houses(){
 
     draw_house({0, GROUND_HEIGHT});
 
-    draw_house({SIZE/2 - 120, GROUND_HEIGHT});
+    draw_mountain_circular({SIZE-275, GROUND_HEIGHT},true);
+    draw_house({SIZE - 300,GROUND_HEIGHT});
 
-    draw_house({SIZE - 200, GROUND_HEIGHT});
 
+    draw_house({SIZE - 135, GROUND_HEIGHT});
 }
