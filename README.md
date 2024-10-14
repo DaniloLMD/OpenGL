@@ -13,8 +13,8 @@ Esse repositório foi desenvolvido durante a disciplina de Computação Gráfica
 
 ## Para clonar o repositório:
 ```bash
-git clone https://github.com/DaniloLMD/SDL2/
-cd SDL2
+git clone https://github.com/DaniloLMD/OpenGL/
+cd OpenGL
 ```
 
 
