@@ -18,7 +18,7 @@ Car car = {{SIZE, ROAD_Y + 2* (int)wheel_rad}, 130, 30, -1};
 
 void handle_car(Car* c){
     if(!c) return;
-    if(c->p.x > SIZE && c->direction > 0) c->p.x = - c->w;
+    if(c->p.x > SIZE && c->direction > 0) c->p.x = - c->w - 100;
     else if(c->p.x + c->w < 0 && c->direction < 0) c->p.x = SIZE + c->w;
 }
 

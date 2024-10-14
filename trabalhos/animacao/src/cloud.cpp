@@ -6,10 +6,12 @@ struct Cloud{
     int direction;
 };
 
-int start = 50;
+int start = 100;
+int cloud_width = 65;
+
 void handle_cloud(Cloud* c){
-    if(c->pos.x > SIZE && c->direction > 0) c->pos.x = 0 - start;
-    if(c->pos.x < 0 && c->direction < 0) c->pos.x = SIZE + start;
+    if(c->pos.x > SIZE && c->direction > 0) c->pos.x = 0 - start - cloud_width;
+    if(c->pos.x + cloud_width < 0 && c->direction < 0) c->pos.x = SIZE + start;
 }
 
 void draw_cloud(Cloud* c){
