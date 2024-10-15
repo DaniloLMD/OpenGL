@@ -9,6 +9,6 @@ struct Circle{
     GLdouble rad;
 };
 
-void draw_circle(Circle c);
+void draw_circle(Circle c, bool filled = true);
 
 #endif
