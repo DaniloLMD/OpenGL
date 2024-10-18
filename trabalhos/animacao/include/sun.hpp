@@ -14,4 +14,7 @@ Circle moon2 = {{SIZE - 30, SUN_HEIGHT}, SUN_RAD};
 
 void update_sun();
 
+GLfloat sky_color[][3] = {{0.6, 0.6, 0.8}, {0.3, 0.3, 0.5}};
+
+
 #endif  

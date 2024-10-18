@@ -105,7 +105,7 @@ void draw_house(Point p){
 
 void draw_houses(){
 
-    draw_house({0, GROUND_HEIGHT});
+    draw_house({6, GROUND_HEIGHT});
 
     draw_mountain_circular({SIZE-275, GROUND_HEIGHT},true);
     draw_house({SIZE - 300,GROUND_HEIGHT});

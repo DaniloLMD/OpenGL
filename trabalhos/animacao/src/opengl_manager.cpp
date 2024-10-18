@@ -10,8 +10,6 @@ void initialize(){
     glutInitWindowSize(SCREEN_W, SCREEN_H); 
     glutCreateWindow("Animation");
 
-    glClearColor(sky_color[0],sky_color[1], sky_color[2], 1);
-
     gluOrtho2D(left, right, bottom, top);
 }
 
