@@ -10,10 +10,10 @@ void initialize_z_buffer() {
 }
 
 void check(Point p) {
-    if (p.x < -SIZE || p.x >= SIZE || p.y < -SIZE || p.y >= SIZE) return;
+    if (p.x <= -SIZE || p.x >= SIZE || p.y <= -SIZE || p.y >= SIZE) return;
 
-    int x = (p.x + SIZE) * Z_SIZE / (2 * SIZE);
-    int y = (p.y + SIZE) * Z_SIZE / (2 * SIZE);
+    int x = (p.x + SIZE);
+    int y = (p.y + SIZE);
 
     if (p.z < z_buffer[x][y]) {
         draw_point(p);

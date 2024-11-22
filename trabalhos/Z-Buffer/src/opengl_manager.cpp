@@ -3,9 +3,8 @@
 
 void initialize(int w, int h, int left, int right, int bottom, int top){
     //Inicialização do OpenGL, da janela principal e da janela de visualização
-    // glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_RGB);
-    
+
     glutInitWindowSize(w, h); 
     glutCreateWindow("Z-Buffer");
 

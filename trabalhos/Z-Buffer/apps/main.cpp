@@ -5,17 +5,16 @@
 #include "../include/cubo.hpp"
 #include <stdio.h>
 
-const int N = int(1e5);
-
 double angX = 0, angY = 0, angZ = 0;
 
 #define N_CUBOS 3
-const int size = 100;
+const int size = 50;
+const int distance = 200;
 int sizes[N_CUBOS] = {size, size, size};
 Cubo cubos[N_CUBOS] = {
     Cubo({0, 0, 0}, sizes[0]),
-    Cubo({300, 0, 50}, sizes[1]),
-    Cubo({-300, 0, -50}, sizes[1])
+    Cubo({distance, 0, 50}, sizes[1]),
+    Cubo({-distance, 0, -50}, sizes[1])
 };
 
 void draw_eixos(){
@@ -51,24 +50,22 @@ void display(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     glLoadIdentity();
-
     glMatrixMode(GL_MODELVIEW);
+
+    glScalef(3,3,3);
     glOrtho(left, right, bottom, top, -SIZE, SIZE);
-    // glRotatef(angX, 1.0, 0.0, 0.0);
-    // glRotatef(angY, 0.0, 1.0, 0.0);
-    // glRotatef(angZ, 0.0, 0.0, 1.0);
 
     initialize_z_buffer();
 
-    draw_cubos();
     // draw_eixos();
+    draw_cubos();
 
     glutSwapBuffers();
     glFlush();
 
 }
 
-double rotate_change = 4;
+double rotate_change = 5;
 void keyboard(int key, int x, int y){
     if(key < GLUT_KEY_LEFT || key > GLUT_KEY_DOWN) return;
     if(key == GLUT_KEY_DOWN){
@@ -78,11 +75,9 @@ void keyboard(int key, int x, int y){
         angX -= rotate_change;
     }
     if(key == GLUT_KEY_LEFT){
-        // angZ += rotate_change;
         angY += rotate_change;
     }
     if(key == GLUT_KEY_RIGHT){
-        // angZ -= rotate_change;
         angY -= rotate_change;
     }
 
@@ -95,8 +90,6 @@ void key(unsigned char key, int x, int y){
     if(key == 'z') angZ += rotate_change;
     if(key == 'x') angZ -= rotate_change;
     
-    
-
     rotate_cubos();
     display();  
 }

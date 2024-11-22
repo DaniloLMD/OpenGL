@@ -5,7 +5,7 @@
 #include <GL/glut.h>
 
 
-#define SIZE 900 // tamanho da janela e da viewport
+#define SIZE 1000 // tamanho da janela e da viewport
 
 int h = SIZE, w = SIZE; //dimensoes da janela
 GLfloat left = -SIZE, right = SIZE, bottom = -SIZE, top = SIZE; //dimensoes da janela de visualização

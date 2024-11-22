@@ -7,6 +7,7 @@ void draw_point(Point p){
     glEnd();
 }
 
+//funções de manipular vetor 
 Point subtract(Point a, Point b) {
     return (Point){a.x - b.x, a.y - b.y, a.z - b.z};
 }
@@ -33,7 +34,7 @@ int dot(Point a, Point b) {
 Point normalize(Point v) {
     double len = sqrt(dot(v, v));
     if (len == 0) { 
-        return (Point){0, 0, 0}; // Evitar divisão por zero
+        return (Point){0, 0, 0};
     }
     return scale(v, 1.0 / len);
 }

@@ -146,7 +146,8 @@ void display(void) {
     glLineWidth(50);
 
     // draw_eixos();
-    cubo();
+    // cubo();
+    single_color();
 
 
     glLoadIdentity();

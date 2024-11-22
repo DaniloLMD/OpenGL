@@ -6,13 +6,13 @@
 
 GLfloat cores[][3] = {
     {1,0,0},
-    {0,1,0},  
+    {0,1,0},
     {0, 0, 1},
-    {1,0,1}, 
-    {1,1,0}, 
-    {1,1,1},  
+    {1,0,1},
+    {1,1,0},
+    {1,1,1},
     {0.5, 0.5, 0.5},
-    {0, 0, 0} 
+    {0, 0, 0}
 };
 
 Cubo::Cubo(Point center, int tam) : center(center), tam(tam){
@@ -85,9 +85,11 @@ void Cubo::Rotate(double angX, double angY, double angZ){
 
 void Cubo::DrawFace(int face){
     glColor3fv(cores[face]);
+    glBegin(GL_POLYGON);
     for(int i = 0; i < sizes[face]; i++){
         check(faces[face][i]);
     }
+    glEnd();
 }
 
 void Cubo::Translate(int x, int y, int z){

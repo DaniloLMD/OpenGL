@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "glut.h": "c"
+        "glut.h": "c",
+        "random": "cpp",
+        "type_traits": "cpp"
     }
 }

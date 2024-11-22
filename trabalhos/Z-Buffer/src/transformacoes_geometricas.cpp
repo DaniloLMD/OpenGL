@@ -73,6 +73,5 @@ void rotate(Point v[], int size, double angX, double angY, double angZ) {
         v[i].x = x + c.x;
         v[i].y = y + c.y;
         v[i].z = z + c.z;
-
     }
 }

@@ -13,5 +13,4 @@ double z_buffer[Z_SIZE][Z_SIZE];
 void initialize_z_buffer();
 void check(Point p);
 
-
 #endif
