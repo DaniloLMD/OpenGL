@@ -4,13 +4,15 @@
 #include <math.h>
 #include <stdio.h>
 
-GLfloat cores[6][3] = {
+GLfloat cores[][3] = {
     {1,0,0},
-    {0,1,0},
-    {0,0,1},
-    {1,0,1},
-    {1,1,0},
-    {1,0,1},
+    {0,1,0},  
+    {0, 0, 1},
+    {1,0,1}, 
+    {1,1,0}, 
+    {1,1,1},  
+    {0.5, 0.5, 0.5},
+    {0, 0, 0} 
 };
 
 Cubo::Cubo(Point center, int tam) : center(center), tam(tam){
@@ -25,15 +27,11 @@ Cubo::Cubo(Point center, int tam) : center(center), tam(tam){
     vertices[6] = {center.x - tmp, center.y - tmp, center.z - tmp, center.cor}; // - - -
     vertices[7] = {center.x + tmp, center.y - tmp, center.z - tmp, center.cor}; // + - -
 
-    // for(int i = 0; i < 8; i++){
-    //     printf("v%d = %c = (%d, %d, %d)\n", i,'A'+i,vertices[i].x, vertices[i].y, vertices[i].z);
-    // }
-
     Rotate(0,0,0);
 }
 
 void Cubo::Draw(){
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 6; i++){
         DrawFace(i);
     }
 }
@@ -47,7 +45,7 @@ void Cubo::Render(Point* p, int face){
     Point u = normalize(subtract(P2, P1));
     Point n = normalize(cross(u, subtract(P3, P1)));
     Point v = normalize(cross(n, u));
-    
+
     double x1 = dot(subtract(P1, P1), u), y1 = dot(subtract(P1, P1), v);
     double x2 = dot(subtract(P2, P1), u), y2 = dot(subtract(P2, P1), v);
     double x3 = dot(subtract(P3, P1), u), y3 = dot(subtract(P3, P1), v);
@@ -65,8 +63,9 @@ void Cubo::Render(Point* p, int face){
             Point pixel = add(P1, add(scale(u, x), scale(v, y)));
             faces[face][sizes[face]++] = pixel;
         }
-    } 
+    }
 }
+
 void Cubo::Rotate(double angX, double angY, double angZ){
     Point f[6][4] = {
             {vertices[6], vertices[3], vertices[2], vertices[7]}, //G D C H
@@ -74,8 +73,8 @@ void Cubo::Rotate(double angX, double angY, double angZ){
             {vertices[6], vertices[7], vertices[1], vertices[4]}, //G H B D
 
             {vertices[4], vertices[1], vertices[0], vertices[5]}, //E B A F
-            {vertices[1], vertices[0], vertices[2], vertices[7]},   //B A C H
-            {vertices[4], vertices[1], vertices[3], vertices[2]}  //E B D C
+            {vertices[1], vertices[0], vertices[2], vertices[7]}, //B A C H
+            {vertices[0], vertices[2], vertices[5], vertices[7]}  //E B D C
     };
 
     for(int i = 0; i < 6; i++){
@@ -91,7 +90,10 @@ void Cubo::DrawFace(int face){
     }
 }
 
-/*
-    0 = A
-
-*/
+void Cubo::Translate(int x, int y, int z){
+    for(int i = 0; i < 8; i++){
+        vertices[i].x += x;
+        vertices[i].y += y;
+        vertices[i].z += z;
+    }
+}

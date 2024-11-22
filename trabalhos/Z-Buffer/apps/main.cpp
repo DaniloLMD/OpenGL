@@ -5,11 +5,18 @@
 #include "../include/cubo.hpp"
 #include <stdio.h>
 
+const int N = int(1e5);
+
 double angX = 0, angY = 0, angZ = 0;
 
-#define N_CUBOS 1
-int sizes[N_CUBOS] = {150};
-Cubo cubos[N_CUBOS] = { Cubo({sizes[0], sizes[0], sizes[0]}, sizes[0]) };
+#define N_CUBOS 3
+const int size = 100;
+int sizes[N_CUBOS] = {size, size, size};
+Cubo cubos[N_CUBOS] = {
+    Cubo({0, 0, 0}, sizes[0]),
+    Cubo({300, 0, 50}, sizes[1]),
+    Cubo({-300, 0, -50}, sizes[1])
+};
 
 void draw_eixos(){
     glColor3f(1,1,1);
@@ -54,7 +61,7 @@ void display(){
     initialize_z_buffer();
 
     draw_cubos();
-    draw_eixos();
+    // draw_eixos();
 
     glutSwapBuffers();
     glFlush();
@@ -85,8 +92,9 @@ void keyboard(int key, int x, int y){
 
 void key(unsigned char key, int x, int y){
 
-    if(key == 'a') angZ += rotate_change;
-    if(key == 'b') angZ -= rotate_change;
+    if(key == 'z') angZ += rotate_change;
+    if(key == 'x') angZ -= rotate_change;
+    
     
 
     rotate_cubos();
@@ -100,7 +108,6 @@ int main(int argc, char* argv[]){
     //Funções a serem chamadas durante a execução do programa
     display();
 
-    // glutIdleFunc(display) ;
     glutSpecialFunc(keyboard);
     glutKeyboardFunc(key);
 

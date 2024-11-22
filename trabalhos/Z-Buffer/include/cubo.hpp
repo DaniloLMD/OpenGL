@@ -16,7 +16,7 @@ struct Cubo{
     void DrawFace(int face);
     void Render(Point* p, int face);
     void Rotate(double angX, double angY, double angZ);
-
+    void Translate(int x, int y, int z);
 };
 
 #endif
