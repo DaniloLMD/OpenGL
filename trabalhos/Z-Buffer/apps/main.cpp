@@ -103,8 +103,7 @@ int main(int argc, char* argv[]){
     initialize(w, h, left, right, bottom, top);
 
     //Funções a serem chamadas durante a execução do programa
-    display();
-
+    glutDisplayFunc(display);
     glutSpecialFunc(keyboard);
     glutKeyboardFunc(key);
 
