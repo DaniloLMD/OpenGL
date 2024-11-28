@@ -10,9 +10,7 @@ GLfloat cores[][3] = {
     {0, 0, 1},
     {1,0,1},
     {1,1,0},
-    {1,1,1},
-    {0.5, 0.5, 0.5},
-    {0, 0, 0}
+    {0.9,0.9,0.9},
 };
 
 Cubo::Cubo(Point center, int tam) : center(center), tam(tam){

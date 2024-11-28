@@ -7,6 +7,8 @@
 
 double angX = 0, angY = 0, angZ = 0;
 
+bool eixo = false;
+
 #define N_CUBOS 3
 const int size = 50;
 const int distance = 200;
@@ -46,6 +48,7 @@ void rotate_cubos(){
     }
 }
 
+
 void display(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
@@ -57,8 +60,8 @@ void display(){
 
     initialize_z_buffer();
 
-    // draw_eixos();
     draw_cubos();
+    if(eixo) draw_eixos();
 
     glutSwapBuffers();
     glFlush();
@@ -89,6 +92,7 @@ void key(unsigned char key, int x, int y){
 
     if(key == 'z') angZ += rotate_change;
     if(key == 'x') angZ -= rotate_change;
+    if(key == ' ') eixo = !eixo;
     
     rotate_cubos();
     display();  
