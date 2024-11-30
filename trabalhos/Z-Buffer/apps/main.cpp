@@ -10,7 +10,7 @@ double angX = 0, angY = 0, angZ = 0;
 bool eixo = false;
 
 #define N_CUBOS 3
-const int size = 50;
+const int size = 90;
 const int distance = 200;
 int sizes[N_CUBOS] = {size, size, size};
 Cubo cubos[N_CUBOS] = {
@@ -55,7 +55,7 @@ void display(){
     glLoadIdentity();
     glMatrixMode(GL_MODELVIEW);
 
-    glScalef(3,3,3);
+    // glScalef(3,3,3);
     glOrtho(left, right, bottom, top, -SIZE, SIZE);
 
     initialize_z_buffer();
