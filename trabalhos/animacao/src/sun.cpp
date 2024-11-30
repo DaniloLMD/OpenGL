@@ -16,7 +16,7 @@ void update_sun(){
 
     glClearColor(sky_color[cor_ceu][0],sky_color[cor_ceu][1], sky_color[cor_ceu][2], 1);
 
-    ang += 0.25;
+    ang += 0.15;
     glColor3f(1, 1, 0);
     draw_circle(sun);
 

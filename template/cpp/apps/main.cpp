@@ -20,6 +20,7 @@ int main(int argc, char* argv[]){
 
     //Funções a serem chamadas durante a execução do programa
     display();
+    glutDisplayFunc(display);
 
     //Inicio do programa
     glutMainLoop();

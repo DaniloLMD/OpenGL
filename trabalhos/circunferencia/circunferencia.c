@@ -207,7 +207,7 @@ int main(int argc, char** argv){
     glutMouseFunc(handle_mouse);
     glutKeyboardFunc(handle_keys);
 
-    display();
+    glutDisplayFunc(display);
 
     //Inicio do programa
     glutMainLoop();

@@ -7,7 +7,7 @@ void draw_circle(Circle c, bool filled)
     GLdouble theta = 0.0;
 
     glBegin( (filled) ? GL_POLYGON : GL_LINE_LOOP);
-    {
+    {   
         for(int i = 0; i <= points; i++, theta += delTheta )
         {
             glVertex2f(c.center.x + c.rad * cos(theta), c.center.y + c.rad * sin(theta));
