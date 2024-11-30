@@ -1,93 +1,71 @@
 #include "../include/cubo.hpp"
 #include "../include/z_buffer.hpp"
 #include "../include/transformacoes_geometricas.hpp"
+#include "../include/cores.hpp"
 #include <math.h>
 #include <stdio.h>
 
-GLfloat cores[][3] = {
-    {1,0,0},
-    {0,1,0},
-    {0, 0, 1},
-    {1,0,1},
-    {1,1,0},
-    {0.9,0.9,0.9},
-};
+GLfloat cor_padrao[][3] = {RED, GREEN, BLUE, YELLOW, PINK, WHITE};
 
-Cubo::Cubo(Point center, int tam) : center(center), tam(tam){
-    int tmp = tam/2;
 
-    vertices[0] = {center.x + tmp, center.y + tmp, center.z + tmp, center.cor}; // + + +
-    vertices[1] = {center.x + tmp, center.y + tmp, center.z - tmp, center.cor}; // + + -
-    vertices[2] = {center.x + tmp, center.y - tmp, center.z + tmp, center.cor}; // + - +
-    vertices[3] = {center.x - tmp, center.y - tmp, center.z + tmp, center.cor}; // - - +
-    vertices[4] = {center.x - tmp, center.y + tmp, center.z - tmp, center.cor}; // - + -
-    vertices[5] = {center.x - tmp, center.y + tmp, center.z + tmp, center.cor}; // - + +
-    vertices[6] = {center.x - tmp, center.y - tmp, center.z - tmp, center.cor}; // - - -
-    vertices[7] = {center.x + tmp, center.y - tmp, center.z - tmp, center.cor}; // + - -
+Cubo::Cubo(Point center, int tam, GLfloat cores[6][3]) : center(center), tam(tam){
+    int dist = tam/2;
+
+    vertices[0] = {center.x + dist, center.y + dist, center.z + dist, center.cor}; // + + +
+    vertices[1] = {center.x + dist, center.y + dist, center.z - dist, center.cor}; // + + -
+    vertices[2] = {center.x + dist, center.y - dist, center.z + dist, center.cor}; // + - +
+    vertices[3] = {center.x - dist, center.y - dist, center.z + dist, center.cor}; // - - +
+    vertices[4] = {center.x - dist, center.y + dist, center.z - dist, center.cor}; // - + -
+    vertices[5] = {center.x - dist, center.y + dist, center.z + dist, center.cor}; // - + +
+    vertices[6] = {center.x - dist, center.y - dist, center.z - dist, center.cor}; // - - -
+    vertices[7] = {center.x + dist, center.y - dist, center.z - dist, center.cor}; // + - -
+
+    if(cores){
+        for(int i = 0; i < 6; i++){
+            for(int j = 0; j < 3; j++){
+                this->cores[i][j] = cores[i][j];
+            }
+        }
+    }
 
     Rotate(0,0,0);
 }
 
+void Cubo::DrawVertices(){
+    glPointSize(10);
+
+    glBegin(GL_POINTS);
+        for(int i = 0; i < 8; i++){
+            glColor3fv(cores[i]);
+            glVertex3i(vertices_rotacionados[i].x, vertices_rotacionados[i].y, vertices_rotacionados[i].z);
+        }
+    glEnd();
+
+    glPointSize(1);
+}
+
 void Cubo::Draw(){
+    RenderFaces();
     for(int i = 0; i < 6; i++){
-        DrawFace(i);
+        glColor3fv(cores[i]);
+        DrawFace(face_vertices[i]);
     }
 }
 
-void Cubo::Render(Point* p, int face){
-    Point P1 = p[0];
-    Point P2 = p[1];
-    Point P3 = p[2];
-    Point P4 = p[3];
-
-    Point u = normalize(subtract(P2, P1));
-    Point n = normalize(cross(u, subtract(P3, P1)));
-    Point v = normalize(cross(n, u));
-
-    double x1 = dot(subtract(P1, P1), u), y1 = dot(subtract(P1, P1), v);
-    double x2 = dot(subtract(P2, P1), u), y2 = dot(subtract(P2, P1), v);
-    double x3 = dot(subtract(P3, P1), u), y3 = dot(subtract(P3, P1), v);
-    double x4 = dot(subtract(P4, P1), u), y4 = dot(subtract(P4, P1), v);
-
-    int x_min = (int)ceil(fmin(fmin(x1, x2), fmin(x3,x4)));
-    int x_max = (int)ceil(fmax(fmax(x1, x2), fmax(x3,x4)));
-    int y_min = (int)ceil(fmin(fmin(y1, y2), fmin(y3,y4)));
-    int y_max = (int)ceil(fmax(fmax(y1, y2), fmax(y3,y4)));
-
-
-    sizes[face] = 0;
-    for (int x = x_min; x <= x_max; x++) {
-        for (int y = y_min; y <= y_max; y++) {
-            Point pixel = add(P1, add(scale(u, x), scale(v, y)));
-            faces[face][sizes[face]++] = pixel;
-        }
-    }
+void Cubo::RenderFaces(){
+    face_vertices[0] = {vertices_rotacionados[6], vertices_rotacionados[3], vertices_rotacionados[2], vertices_rotacionados[7]}; //G D C H
+    face_vertices[1] = {vertices_rotacionados[6], vertices_rotacionados[4], vertices_rotacionados[5], vertices_rotacionados[3]}; //G E F D
+    face_vertices[2] = {vertices_rotacionados[6], vertices_rotacionados[7], vertices_rotacionados[1], vertices_rotacionados[4]}; //G H B E
+    face_vertices[3] = {vertices_rotacionados[4], vertices_rotacionados[1], vertices_rotacionados[0], vertices_rotacionados[5]}; //E B A F
+    face_vertices[4] = {vertices_rotacionados[1], vertices_rotacionados[0], vertices_rotacionados[2], vertices_rotacionados[7]}; //B A C H
+    face_vertices[5] = {vertices_rotacionados[0], vertices_rotacionados[2], vertices_rotacionados[3], vertices_rotacionados[5]}; //A C D F
 }
 
 void Cubo::Rotate(double angX, double angY, double angZ){
-    Point f[6][4] = {
-            {vertices[6], vertices[3], vertices[2], vertices[7]}, //G D C H
-            {vertices[6], vertices[4], vertices[5], vertices[3]}, //G E F D
-            {vertices[6], vertices[7], vertices[1], vertices[4]}, //G H B D
-
-            {vertices[4], vertices[1], vertices[0], vertices[5]}, //E B A F
-            {vertices[1], vertices[0], vertices[2], vertices[7]}, //B A C H
-            {vertices[0], vertices[2], vertices[5], vertices[7]}  //E B D C
-    };
-
-    for(int i = 0; i < 6; i++){
-        Render(f[i], i);
-        rotate(faces[i], sizes[i], angX, angY, angZ);
+    for(int i = 0; i < 8; i++){
+        vertices_rotacionados[i] = vertices[i];
     }
-}
-
-void Cubo::DrawFace(int face){
-    glColor3fv(cores[face]);
-    glBegin(GL_POLYGON);
-    for(int i = 0; i < sizes[face]; i++){
-        check(faces[face][i]);
-    }
-    glEnd();
+    rotate(vertices_rotacionados, 8, angX, angY, angZ);
 }
 
 void Cubo::Translate(int x, int y, int z){
@@ -95,5 +73,34 @@ void Cubo::Translate(int x, int y, int z){
         vertices[i].x += x;
         vertices[i].y += y;
         vertices[i].z += z;
+
+        vertices_rotacionados[i].x += x;
+        vertices_rotacionados[i].y += y;
+        vertices_rotacionados[i].z += z;
     }
+    Draw();
+}
+
+
+void Cubo::DrawFace(std::vector<Point>& v){
+    Point w = subtract(v[1], v[0]);
+    Point u = subtract(v[3], v[0]);
+
+    int len_w = len(w);
+    int len_u = len(u);
+    
+    w = normalize(w);
+    u = normalize(u);
+
+    int rodados = 0;
+    for(double i = 0; i <= len_w; i += 0.5){
+        Point w2 = scale(w, i); 
+        for(double j = 0; j <= len_u; j += 0.5){
+            Point u2 = scale(u, j);
+            Point p = add(w2, u2);
+            p = add(p, v[0]);
+            check(p);
+        }
+    }
+
 }

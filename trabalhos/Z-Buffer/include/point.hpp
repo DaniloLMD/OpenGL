@@ -4,8 +4,12 @@
 #include <GL/glut.h>
 
 typedef struct Point{
-    int x, y, z;
+    double x, y, z;
     int cor;
+
+    bool operator==(Point a){
+        return x == a.x && y == a.y && z == a.z;
+    }
 } Point;
 
 void draw_point(Point p);
@@ -22,6 +26,7 @@ int dot(Point a, Point b);
 
 Point normalize(Point v);
 
+double len(Point v);
 
 
 #endif

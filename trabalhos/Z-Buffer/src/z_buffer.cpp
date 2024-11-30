@@ -15,7 +15,7 @@ void check(Point p) {
     int x = (p.x + SIZE);
     int y = (p.y + SIZE);
 
-    if (p.z < z_buffer[x][y]) {
+    if (p.z <= z_buffer[x][y]) {
         draw_point(p);
         z_buffer[x][y] = p.z;
     }

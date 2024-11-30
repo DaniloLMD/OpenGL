@@ -1,7 +1,7 @@
 #include "../include/opengl_manager.hpp"
 #include <stdlib.h>
 
-void initialize(int w, int h, int left, int right, int bottom, int top){
+void initialize(){
     //Inicialização do OpenGL, da janela principal e da janela de visualização
     glutInitDisplayMode(GLUT_DEPTH | GLUT_RGB);
 

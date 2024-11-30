@@ -13,9 +13,9 @@ Point subtract(Point a, Point b) {
 }
 
 Point scale(Point v, double s) {
-    int x = v.x * s;
-    int y = v.y * s;
-    int z = v.z * s;
+    double x = v.x * s;
+    double y = v.y * s;
+    double z = v.z * s;
     return (Point){x, y, z};
 }
 
@@ -31,10 +31,14 @@ int dot(Point a, Point b) {
     return a.x * b.x + a.y * b.y + a.z * b.z;
 }
 
+double len(Point v){
+    return sqrt(dot(v,v));
+}
+
 Point normalize(Point v) {
-    double len = sqrt(dot(v, v));
-    if (len == 0) { 
+    double tam = sqrt(dot(v, v));
+    if (tam == 0) { 
         return (Point){0, 0, 0};
     }
-    return scale(v, 1.0 / len);
+    return scale(v, 1.0 / tam);
 }

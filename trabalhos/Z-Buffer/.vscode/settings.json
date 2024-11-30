@@ -2,6 +2,7 @@
     "files.associations": {
         "glut.h": "c",
         "random": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "cmath": "cpp"
     }
 }
