@@ -21,7 +21,7 @@ typedef struct Cubo {
     Point vertices_rotacionados[8];
 } Cubo;
 
-const int SIZE = 500; // tamanho da tela
+const int SIZE = 700; // tamanho da tela
 
 //variaveis de rotacao
 GLdouble angX = 0, angY = 0, angZ = 0.0; 
@@ -131,11 +131,7 @@ void Cubo::Draw() {
 
     //aplica a projeção ortogonal
     for (int i = 0; i < 8; ++i) {
-        transformed
-        /*
-/projeta um ponto com perspectiva: calculamos um W diretamente proporcional à distancia do ponto
-//ao plano em que será desenhado. Então, o ponto a ser desenhado será (x/w, y/w, z)
-//Ou seja, os pontos mais longe do plano, terão coordenadas X e Y menores, gerando uma sensacao de distancia.[i] = vertices_rotacionados[i];
+        transformed[i] = vertices_rotacionados[i];
         perspectiveProjection(transformed[i], -SIZE, SIZE, -SIZE, SIZE, -SIZE, SIZE);
     }
 
@@ -203,7 +199,7 @@ void initialize() {
     glutInitWindowSize(SIZE, SIZE);
     glutCreateWindow("Projecao Perspectiva");
     glClearColor(0.0, 0.0, 0.0, 1.0);
-    glOrtho(-1, 1, -1, 1, -1, 1);
+    glOrtho(-1.3, 1.3, -1.3, 1.3, -1.3, 1.3);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);

@@ -16,7 +16,7 @@ typedef struct Cubo {
     void Draw();
 } Cubo;
 
-const int SIZE = 500; // tamanho da tela
+const int SIZE = 700; // tamanho da tela
 
 //variaveis de rotacao
 GLdouble angX = 0, angY = 0, angZ = 0.0; 
@@ -142,7 +142,7 @@ void display(){
     glRotatef(angZ, 0, 0, 1);
 
     //deseha um cubo
-    Cubo cubo({0, 0, 0}, 500);
+    Cubo cubo({0, 0, 0}, 700);
     cubo.Draw();
 
     glutSwapBuffers();
