@@ -187,7 +187,7 @@ void display(){
     glTranslatef(translateX, translateY, translateZ);
 
     //deseha um cubo
-    Cubo cubo({0, 0, 0}, 0.8);
+    Cubo cubo({0, 0, 0}, 0.5);
     cubo.Draw();
 
     glutSwapBuffers();
@@ -245,12 +245,12 @@ void keyboard(unsigned char key, int, int) {
     if(key == 'd') {
         sumX += translate_change;
     }
-    if(key == 'q') {
-        sumZ -= translate_change;
-    }
-    if(key == 'e') {
-        sumZ += translate_change;
-    }
+    // if(key == 'q') {
+    //     sumZ -= translate_change;
+    // }
+    // if(key == 'e') {
+    //     sumZ += translate_change;
+    // }
 
     if(key == 'x') {
         angZ += rotate_change;
