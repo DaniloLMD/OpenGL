@@ -55,7 +55,17 @@ Cubo::Cubo(Point centro, double tamanho) : centro(centro) {
     vertices[7] = {centro.x - tam, centro.y + tam, centro.z + tam};
 }
 
-// projeta ortogonal manual
+/* projecao ortogonal manual: transformamos as coordenadas do ponto para o intervalo [0, -1]
+1 passo: subtraimos o centro da tela no ponto
+X' = X - (right+left)/2;
+
+2 passo: normalizar o valor, dividir o resultado pelo tamanho total
+X'' = X' / ((right - left) / 2),    substituindo X':
+X'' = ((X - (right+left))/2) / ((right - left)/2), multiplicando por 2 o denominador e o numerador:
+X'' = (2X - (right+left)) / (right - left)
+
+Portanto, o objetivo é centralizar o ponto dentro da área de visualização limitada por left->right, bottom->top e near->far
+*/
 void orthogonalProjection(Point& p, double left, double right, double bottom, double top, double near, double far) {
     p.x = (2.0f * p.x - (right + left)) / (right - left);
     p.y = (2.0f * p.y - (top + bottom)) / (top - bottom);
