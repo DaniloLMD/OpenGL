@@ -19,8 +19,12 @@ typedef struct Cubo {
 const int SIZE = 800; // tamanho da tela
 
 //variaveis de rotacao
-GLdouble angX = 0, angY = 0; 
+GLdouble angX = 0, angY = 0, angZ = 0.0; 
 const double rotate_change = 5;
+//variaveis de translacao
+GLfloat translateX = 0.0, translateY = 0.0, translateZ = 0.0;
+GLfloat translate_change = 0.1;
+
 
 //cores disponiveis
 enum color_names {
@@ -130,24 +134,18 @@ void display(){
 
     //rotaciona os pontos
     glLoadIdentity();
+
+    glTranslatef(translateX, translateY, translateZ);
+
     glRotatef(angX, 1, 0, 0);
     glRotatef(angY, 0, 1, 0);
+    glRotatef(angZ, 0, 0, 1);
 
     //deseha um cubo
     Cubo cubo({0, 0, 0}, 300);
     cubo.Draw();
 
     glutSwapBuffers();
-}
-
-//lida com as setinhas do teclado(para rotacionar)
-void special_keyboard(int key, int x, int y) {
-    if (key == GLUT_KEY_UP) angX += rotate_change;
-    if (key == GLUT_KEY_DOWN) angX -= rotate_change;
-    if (key == GLUT_KEY_LEFT) angY += rotate_change;
-    if (key == GLUT_KEY_RIGHT) angY -= rotate_change;
-
-    glutPostRedisplay();
 }
 
 //inicializa a janela e o Z-Buffer para evitar sobrescrita de pontos
@@ -161,6 +159,71 @@ void initialize() {
     glDepthFunc(GL_LEQUAL);
 }
 
+
+//lida com as setinhas do teclado(para rotacionar)
+void special_keyboard(int key, int x, int y) {
+    if (key == GLUT_KEY_UP) angX += rotate_change;
+    if (key == GLUT_KEY_DOWN) angX -= rotate_change;
+    if (key == GLUT_KEY_LEFT) angY += rotate_change;
+    if (key == GLUT_KEY_RIGHT) angY -= rotate_change;
+
+    glutPostRedisplay();
+}
+
+int ok(double sumX, double sumY, double sumZ){
+    double lim = 0.85;
+    double limZ = 0.7;
+    if(translateX + sumX >= lim) return 0;
+    if(translateX + sumX <= -lim) return 0;
+
+    if(translateY + sumY >= lim) return 0;
+    if(translateY + sumY <= -lim) return 0;
+
+    if(translateZ + sumZ >= limZ) return 0;
+    if(translateZ + sumZ <= -limZ) return 0;
+
+    return 1;
+}
+
+void keyboard(unsigned char key, int, int) {
+    double sumX = 0, sumY = 0, sumZ = 0;
+    if(key == 'w') {
+        sumY += translate_change;
+    }
+    if(key == 's') {
+        sumY -= translate_change;
+    }
+    if(key == 'a') {
+        sumX -= translate_change;
+    }
+    if(key == 'd') {
+        sumX += translate_change;
+    }
+    if(key == 'q') {
+        sumZ -= translate_change;
+    }
+    if(key == 'e') {
+        sumZ += translate_change;
+    }
+
+    if(key == 'x') {
+        angZ += rotate_change;
+    }
+    if(key == 'z') {
+        angZ -= rotate_change;
+    }
+
+
+    if(ok(sumX, sumY, sumZ)){
+        translateX += sumX;
+        translateY += sumY;
+        translateZ += sumZ;
+    }
+
+    glutPostRedisplay();
+}
+
+
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
 
@@ -168,6 +231,7 @@ int main(int argc, char** argv) {
 
     glutDisplayFunc(display);
     glutSpecialFunc(special_keyboard);
+    glutKeyboardFunc(keyboard);
 
     glutMainLoop();
     return 0;
