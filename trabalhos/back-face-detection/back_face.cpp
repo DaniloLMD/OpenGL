@@ -1,6 +1,8 @@
 #include <GL/glut.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
+#include <bits/stdc++.h>
 
 #define PI acos(-1)
 
@@ -14,6 +16,9 @@ typedef struct Cubo {
     Point centro;
     double tamanho;
     Point vertices[8];
+
+    std::vector<Point> faces[6];
+    int cores_faces[6];
 
     Cubo(Point centro, double tamanho);
     void Draw();
@@ -33,8 +38,9 @@ GLfloat translate_change = 0.1;
 
 //cores disponiveis
 enum color_names {
-    RED = 0, GREEN, BLUE, YELLOW, PURPLE, WHITE, GRAY, BROWN, CYAN 
+    RED = 0, GREEN, BLUE, YELLOW, PINK, WHITE, GRAY, BROWN, CYAN 
 };
+std::string cores_nomes[] = {"VERMELHA", "VERDE", "AZUL", "AMARELA", "ROSA", "BRANCA", "CINZA", "MARROM", "CIANO"};
 GLfloat cores[][3] = {
     {1, 0, 0},
     {0, 1, 0},
@@ -47,6 +53,18 @@ GLfloat cores[][3] = {
     {0, 1, 1}
 };
 
+//funções de manipular vetor 
+Point subtract(Point a, Point b) {
+    return (Point){a.x - b.x, a.y - b.y, a.z - b.z};
+}
+
+Point cross(Point a, Point b) {
+    return (Point){a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x};
+}
+
+int dot(Point a, Point b) {
+    return a.x * b.x + a.y * b.y + a.z * b.z;
+}
 
 //inicializa um cubo (construtor)
 Cubo::Cubo(Point centro, double tamanho) : centro(centro) {
@@ -73,7 +91,6 @@ void perspectiveProjection(Point& p){
     p.y *= w;
     // p.z *= w;
 }
-
 
 double rad(double ang) {
     return ang * PI /   180; 
@@ -135,46 +152,52 @@ void Cubo::Draw() {
         perspectiveProjection(transformed[i]);
     }
 
+    faces[0] = {transformed[0], transformed[3], transformed[2], transformed[1]};
+    cores_faces[0] = RED;
+
+    faces[1] = {transformed[4], transformed[5], transformed[6], transformed[7]};
+    cores_faces[1] = GREEN;
+
+    faces[2] = {transformed[3], transformed[7], transformed[6], transformed[2]};
+    cores_faces[2] = BLUE;
+
+    faces[3] = {transformed[0], transformed[1], transformed[5], transformed[4]};
+    cores_faces[3] = YELLOW;
+
+    faces[4] = {transformed[1], transformed[2], transformed[6], transformed[5]};
+    cores_faces[4] = PINK;
+
+    faces[5] = {transformed[0], transformed[4], transformed[7], transformed[3]};
+    cores_faces[5] = CYAN;
+
+    Point observador = {0, 0, -100};
+    perspectiveProjection(observador);
+
     //desenha as faces do cubo
-    glBegin(GL_QUADS);
+    system("clear");
+    for(int i = 0; i < 6; i++){
 
-    glColor3fv(cores[RED]);
-    glVertex3f(transformed[0].x, transformed[0].y, transformed[0].z);
-    glVertex3f(transformed[1].x, transformed[1].y, transformed[1].z);
-    glVertex3f(transformed[2].x, transformed[2].y, transformed[2].z);
-    glVertex3f(transformed[3].x, transformed[3].y, transformed[3].z);
+        Point v = subtract(faces[i][1], faces[i][0]);
+        Point u = subtract(faces[i][3], faces[i][0]);
+        Point n = cross(v, u);
 
-    glColor3fv(cores[GREEN]);
-    glVertex3f(transformed[4].x, transformed[4].y, transformed[4].z);
-    glVertex3f(transformed[5].x, transformed[5].y, transformed[5].z);
-    glVertex3f(transformed[6].x, transformed[6].y, transformed[6].z);
-    glVertex3f(transformed[7].x, transformed[7].y, transformed[7].z);
+        Point p = subtract(faces[i][0], observador);
+        double escalar = dot(n, p);
 
-    glColor3fv(cores[BLUE]);
-    glVertex3f(transformed[3].x, transformed[3].y, transformed[3].z);
-    glVertex3f(transformed[2].x, transformed[2].y, transformed[2].z);
-    glVertex3f(transformed[6].x, transformed[6].y, transformed[6].z);
-    glVertex3f(transformed[7].x, transformed[7].y, transformed[7].z);
+        int visivel = (escalar < 0);
 
-    glColor3fv(cores[YELLOW]);
-    glVertex3f(transformed[0].x, transformed[0].y, transformed[0].z);
-    glVertex3f(transformed[1].x, transformed[1].y, transformed[1].z);
-    glVertex3f(transformed[5].x, transformed[5].y, transformed[5].z);
-    glVertex3f(transformed[4].x, transformed[4].y, transformed[4].z);
+        printf("Face %s\t: %s\n", cores_nomes[cores_faces[i]].c_str(), (visivel ? "VISIVEL" : "NAO VISIVEL"));
 
-    glColor3fv(cores[PURPLE]);
-    glVertex3f(transformed[1].x, transformed[1].y, transformed[1].z);
-    glVertex3f(transformed[2].x, transformed[2].y, transformed[2].z);
-    glVertex3f(transformed[6].x, transformed[6].y, transformed[6].z);
-    glVertex3f(transformed[5].x, transformed[5].y, transformed[5].z);
+        if(visivel){
+            glBegin(GL_QUADS);
+                glColor3fv(cores[cores_faces[i]]);
+                for(int j = 0; j < 4; j++){
+                    glVertex3f(faces[i][j].x, faces[i][j].y, faces[i][j].z);
+                }
+            glEnd();
+        }
+    }
 
-    glColor3fv(cores[CYAN]);
-    glVertex3f(transformed[0].x, transformed[0].y, transformed[0].z);
-    glVertex3f(transformed[3].x, transformed[3].y, transformed[3].z);
-    glVertex3f(transformed[7].x, transformed[7].y, transformed[7].z);
-    glVertex3f(transformed[4].x, transformed[4].y, transformed[4].z);
-
-    glEnd();
 }
 
 void display(){
@@ -197,7 +220,7 @@ void display(){
 void initialize() {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(SIZE, SIZE);
-    glutCreateWindow("Projecao Perspectiva");
+    glutCreateWindow("Back-Face Detection");
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glOrtho(-1.3, 1.3, -1.3, 1.3, -1.3, 1.3);
 

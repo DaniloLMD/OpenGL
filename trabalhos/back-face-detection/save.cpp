@@ -67,7 +67,7 @@ Cubo::Cubo(Point centro, double tamanho) : centro(centro) {
 //projeta um ponto com perspectiva: calculamos um W diretamente proporcional à distancia do ponto
 //ao plano em que será desenhado. Então, o ponto a ser desenhado será (x/w, y/w, z)
 //Ou seja, os pontos mais longe do plano, terão coordenadas X e Y menores, gerando uma sensacao de distancia.
-void perspectiveProjection(Point& p){
+void perspectiveProjection(Point& p, double left, double right, double bottom, double top, double near, double far) {
     double w = 1.5 - p.z/2;
     p.x *= w;
     p.y *= w;
@@ -132,7 +132,7 @@ void Cubo::Draw() {
     //aplica a projeção ortogonal
     for (int i = 0; i < 8; ++i) {
         transformed[i] = vertices_rotacionados[i];
-        perspectiveProjection(transformed[i]);
+        perspectiveProjection(transformed[i], -SIZE, SIZE, -SIZE, SIZE, -SIZE, SIZE);
     }
 
     //desenha as faces do cubo

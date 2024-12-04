@@ -93,9 +93,10 @@ void Cubo::DrawFace(std::vector<Point>& v){
     u = normalize(u);
 
     int rodados = 0;
-    for(double i = 0; i <= len_w; i += 0.5){
+    double change = 0.75;
+    for(double i = 0; i <= len_w; i += change){
         Point w2 = scale(w, i); 
-        for(double j = 0; j <= len_u; j += 0.5){
+        for(double j = 0; j <= len_u; j += change){
             Point u2 = scale(u, j);
             Point p = add(w2, u2);
             p = add(p, v[0]);

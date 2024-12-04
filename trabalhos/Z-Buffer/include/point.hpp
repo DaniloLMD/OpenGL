@@ -28,5 +28,4 @@ Point normalize(Point v);
 
 double len(Point v);
 
-
 #endif

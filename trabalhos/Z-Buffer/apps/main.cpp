@@ -14,8 +14,8 @@ bool eixo = false;
 bool stop_rotation = false;
 
 #define N_CUBOS 3
-const int size = 50;
-const int distance = 100;
+const int size = 65;
+const int distance = 2*size;
 int sizes[] = {size, size, size};
 GLfloat cores[3][6][3] = {
     {RED, GREEN, BLUE, YELLOW, PINK, WHITE},
@@ -68,21 +68,22 @@ void rotate_cubos(){
     }
 }
 
-
 void display(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     glLoadIdentity();
     glMatrixMode(GL_MODELVIEW);
 
+
     double scale = 2;
-    glScalef(scale, scale, scale);
     glOrtho(left, right, bottom, top, -INF, INF);
+
+    glScalef(scale, scale, scale);
 
     initialize_z_buffer();
 
-    draw_cubos();
     if(eixo) draw_eixos();
+    draw_cubos();
     
 
     glutSwapBuffers();
@@ -151,6 +152,7 @@ int main(int argc, char* argv[]){
     glutDisplayFunc(display);
     glutSpecialFunc(keyboard);
     glutKeyboardFunc(key);
+
 
     //Inicio do programa
     glutMainLoop();

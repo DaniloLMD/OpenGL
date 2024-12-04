@@ -8,6 +8,7 @@ void draw_point(Point p){
 }
 
 //funções de manipular vetor 
+
 Point subtract(Point a, Point b) {
     return (Point){a.x - b.x, a.y - b.y, a.z - b.z};
 }
